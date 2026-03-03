@@ -1,12 +1,20 @@
-# stats220
+<h1>stats220</h1>
 
-This is my repo for STATS 220. 
+<h2>Introduction</h2>
+<p><b>A little about me:</b></p>
+<ul>
+  <li>I am undertaking a degree in Bachelor of Engineeering & Science conjoint</li>
+  <li>I am taking STATS 220 because it looked interesting</li>
+  <li>I am interested in learning about improving my skills in data science</li>
+  <li>I am taking STATS 220 because it looked interesting</li>
+  <li>I am left handed</li>
+</ul>
+Favourite Drinks:
+<ol>
+  <li>Water</li>
+  <li>Tea</li>
+  <li>Gin & Tonic</li>
+</ol>
+<a href="https://www.auckland.ac.nz/en.html">UoA website</a>
 
-A little about me:
-
-- I am undertaking a degree in Bachelor of Engineeering & Science conjoint
-- I am taking STATS 220 because it looked interesting
-- I am interested in learning about improving my skills in data science
-- I am left handed
-
-A meme that captures how I currently feel about my university studies is ![](https://c.tenor.com/8druEACXtX8AAAAd/tenor.gif)
+<i>A meme that captures how I currently feel about my university studies is</i> ![](https://media1.tenor.com/m/xBk3W_f99MIAAAAC/is-this-a-pigeon-butterfly.gif)
