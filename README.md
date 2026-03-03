@@ -17,4 +17,4 @@ Favourite Drinks:
 </ol>
 <a href="https://www.auckland.ac.nz/en.html">UoA website</a>
 
-<i>A meme that captures how I currently feel about my university studies is</i> ![](https://media1.tenor.com/m/xBk3W_f99MIAAAAC/is-this-a-pigeon-butterfly.gif)
+<i>A meme that I like is</i> ![](https://media1.tenor.com/m/xBk3W_f99MIAAAAC/is-this-a-pigeon-butterfly.gif)
