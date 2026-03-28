@@ -6,7 +6,6 @@
   <li>I am undertaking a degree in Bachelor of Engineeering & Science conjoint</li>
   <li>I am taking STATS 220 because it looked interesting</li>
   <li>I am interested in learning about improving my skills in data science</li>
-  <li>I am taking STATS 220 because it looked interesting</li>
   <li>I am left handed</li>
 </ul>
 Favourite Drinks:
