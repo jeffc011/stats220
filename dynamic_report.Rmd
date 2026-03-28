@@ -1,0 +1,72 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+library(tidyverse)
+```
+
+```{css}
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+body {
+  background-color: #E0E0E0;
+  font-family: "Funnel Sans"
+}
+```
+
+## Pokemon data
+
+The Pokemon data is collected from the most common answers to the daily [PokeDoku](https://pokedoku.com/) puzzles. PokeDoku is a puzzle game inspired by Sudoku where you have 9 tiles from a 3 by 3 square with various requirements. Each tile has 2 requirements a Pokemon must meet in order for the answer to be valid. Since multiple Pokemon can meet these requirements, a score is given based on how common your answer is on each tile.
+
+I am analysing what types of Pokemon are the most common answers. I collect various information on the pokemon such as their name, the region they are from, the evolution form, their primary type and the base stat total (BST).
+
+```{r}
+# Loading data
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRJiDFUifwlREs-W0UXsADT278joWTGYUNOgRm2v_yDLlsUQhjwwhdHQ6CUr3gCQBn3fh28i_SWSlz5/pub?output=csv")
+latest_data <- logged_data %>% rename(name = 2, region = 3, evolution_form = 4, type = 5, BST = 6)
+# Number of unique Pokemon listed
+unique_mons = latest_data %>% select(-Timestamp) %>% mutate(name = tolower(name)) %>% unique() %>% nrow()
+
+# Finds the most common region answered and how many of said region
+region_table = table(latest_data$region)
+common_region = names(region_table)[which.max(region_table)]
+
+# Finds the current strongest pokemon
+strongest_pokemon = latest_data[which.max(latest_data$BST),]
+
+```
+
+`r max(region_table)` Pokemon were from the `r common_region` region, which was the region with the most 
+Pokemon from the data collected. There are `r unique_mons` unique Pokemon in the data collected.
+
+```{r, fig.width = 15}
+# Bar graph of frequency by primary type
+ggplot(data = latest_data, mapping = aes(x = type, fill = evolution_form)) + geom_bar() + theme_minimal() +
+  theme(plot.background = element_rect(fill = "#E0E0E0"), panel.background = element_rect(fill = "white")) +
+  labs(title = "Primary Type Bar Graph",
+       x = "Primary Type",
+       fill = "Evolution form")
+
+# Most common primary type
+type_table = table(latest_data$type)
+common_type = names(type_table)[which.max(type_table)]
+```
+
+The most common primary type was `r common_type` with `r max(type_table)` Pokemon having it as their primary type.
+
+```{r, fig.width = 15}
+# Calculating summary data by grouping by type and plotting the average BST by type
+mean_BST_by_type = latest_data %>% group_by(type) %>% summarise(mean = mean(BST), n = n())
+ggplot(data = mean_BST_by_type) + geom_col(aes(x = type, y = mean)) + theme_minimal() + 
+  theme(plot.background = element_rect(fill = "#E0E0E0"), panel.background = element_rect(fill = "white")) +
+  labs(title = "Average BST by type", 
+       subtitle = "Comparing the average Base Stat Total by the Pokemon's type",
+       x = "Primary Type",
+       y = "Average BST")
+```
+
+`r strongest_pokemon$name` is the strongest recorded Pokemon with a base stat total of `r strongest_pokemon$BST` and has a primary type of `r strongest_pokemon$type`. They are from the `r strongest_pokemon$region` region. More info on `r strongest_pokemon$name` can be found [here][url].
+
+[url]: https://pokemondb.net/pokedex/`r tolower(strongest_pokemon$name)`
