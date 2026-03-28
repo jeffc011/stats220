@@ -5,7 +5,6 @@ output: html_fragment
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
-library(tidyverse)
 ```
 
 ```{css}
@@ -23,6 +22,7 @@ The Pokemon data is collected from the most common answers to the daily [PokeDok
 I am analysing what types of Pokemon are the most common answers. I collect various information on the pokemon such as their name, the region they are from, the evolution form, their primary type and the base stat total (BST).
 
 ```{r}
+library(tidyverse)
 # Loading data
 logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRJiDFUifwlREs-W0UXsADT278joWTGYUNOgRm2v_yDLlsUQhjwwhdHQ6CUr3gCQBn3fh28i_SWSlz5/pub?output=csv")
 latest_data <- logged_data %>% rename(name = 2, region = 3, evolution_form = 4, type = 5, BST = 6)
