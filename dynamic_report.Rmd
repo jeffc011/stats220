@@ -24,20 +24,20 @@ library(tidyverse)
 # Loading data
 logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRJiDFUifwlREs-W0UXsADT278joWTGYUNOgRm2v_yDLlsUQhjwwhdHQ6CUr3gCQBn3fh28i_SWSlz5/pub?output=csv")
 latest_data <- logged_data %>% rename(name = 2, region = 3, evolution_form = 4, type = 5, BST = 6)
+
+# Number of observations
+observations = nrow(latest_data)
+
 # Number of unique Pokemon listed
+# Unique() function removes any duplicate data in an array/tibble. I learnt of this in STATS 326
 unique_mons = latest_data %>% select(-Timestamp) %>% mutate(name = tolower(name)) %>% unique() %>% nrow()
 
-# Finds the most common region answered and how many of said region
-region_table = table(latest_data$region)
-common_region = names(region_table)[which.max(region_table)]
-
-# Finds the current strongest pokemon
-strongest_pokemon = latest_data[which.max(latest_data$BST),]
+# Mean BST
+mean_BST = mean(latest_data$BST) %>% round()
 
 ```
 
-`r max(region_table)` Pokemon were from the `r common_region` region, which was the region with the most 
-Pokemon from the data collected. There are `r unique_mons` unique Pokemon in the data collected.
+Out of the `r observations` Pokemon recorded from the Google Form, there are `r unique_mons` unique Pokemon in the data collected. The mean base stat total of all Pokemon observed is `r mean_BST`.
 
 ```{r, fig.width = 15}
 # Bar graph of frequency by primary type
@@ -47,24 +47,30 @@ ggplot(data = latest_data, mapping = aes(x = type, fill = evolution_form)) + geo
        x = "Primary Type",
        fill = "Evolution form")
 
-# Most common primary type
-type_table = table(latest_data$type)
-common_type = names(type_table)[which.max(type_table)]
 ```
 
-The most common primary type was `r common_type` with `r max(type_table)` Pokemon having it as their primary type.
 
-```{r, fig.width = 15}
-# Calculating summary data by grouping by type and plotting the average BST by type
-mean_BST_by_type = latest_data %>% group_by(type) %>% summarise(mean = mean(BST), n = n())
-ggplot(data = mean_BST_by_type) + geom_col(aes(x = type, y = mean)) + theme_minimal() + 
-  theme(plot.background = element_rect(fill = "#E0E0E0"), panel.background = element_rect(fill = "white")) +
-  labs(title = "Average BST by type", 
-       subtitle = "Comparing the average Base Stat Total by the Pokemon's type",
-       x = "Primary Type",
-       y = "Average BST")
+```{r}
+# Bar graph of frequency by region
+ggplot(data = latest_data, mapping = aes(x = region)) + geom_bar() + theme_minimal() +
+  labs(title = "Region Bar Graph",
+       subtitle = "The number of Pokemon recorded in each region",
+       x = "Region")
 ```
 
-`r strongest_pokemon$name` is the strongest recorded Pokemon with a base stat total of `r strongest_pokemon$BST` and has a primary type of `r strongest_pokemon$type`. They are from the `r strongest_pokemon$region` region. More info on `r strongest_pokemon$name` can be found [here][url].
+```{r}
+# finds the current strongest Pokemon
+# the which.max gives the index of the largest element in an array. I learnt of this in STATS 326
+strongest_pokemon = latest_data[which.max(latest_data$BST),]
 
-[url]: https://pokemondb.net/pokedex/`r tolower(strongest_pokemon$name)`
+# finds the current weakest Pokemon
+# the which.min gives the index of the smallest element in an array. I learnt of this in STATS 326
+weakest_pokemon = latest_data[which.min(latest_data$BST),]
+```
+
+`r strongest_pokemon$name` is the strongest recorded Pokemon with a base stat total of `r strongest_pokemon$BST` and has a primary type of `r strongest_pokemon$type`. They are from the `r strongest_pokemon$region` region. More info on `r strongest_pokemon$name` can be found [here][url_strongest].
+
+`r weakest_pokemon$name` is the weakest recorded Pokemon with a base stat total of `r weakest_pokemon$BST` and has a primary type of `r weakest_pokemon$type`. They are from the `r weakest_pokemon$region` region. More info on `r weakest_pokemon$name` can be found [here][url_weakest].
+
+[url_strongest]: https://pokemondb.net/pokedex/`r tolower(strongest_pokemon$name)`
+[url_weakest]: https://pokemondb.net/pokedex/`r tolower(weakest_pokemon$name)`
